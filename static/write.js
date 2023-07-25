@@ -42,15 +42,21 @@ const handleSubitForm = async (event) => {
   const body = new FormData(form);
   body.append("insertAt", new Date().getTime());
   //세계시간 기준
-  try {
-    const res = await fetch("/items", {
-      method: "POST",
-      body,
-    });
-    const data = await res.json();
-    if (data === "200") window.location.pathname = "/";
-  } catch (e) {
-    console.error("e");
+  const accessToken = window.localStorage.getItem("token");
+
+  const res = await fetch("/items", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    method: "POST",
+    body,
+  });
+
+  if (res.status === 200) window.location.pathname = "/";
+  else if (res.status === 401) {
+    alert("로그인이 필요합니다.");
+    window.location.pathname = "/login.html";
+    return;
   }
 };
 
