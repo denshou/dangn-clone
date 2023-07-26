@@ -29,7 +29,14 @@
 
       <div>
         <label for="password">휴대폰 번호</label>
-        <input type="text" name="phoneNumber" id="phoneNumber" required />
+        <input
+          type="text"
+          name="phoneNumber"
+          id="phoneNumber"
+          oninput="autoHyphen2(this)"
+          maxlength="13"
+          required
+        />
       </div>
 
       <div>
