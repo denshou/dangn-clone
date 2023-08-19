@@ -12,6 +12,10 @@ const calcTime = (timestamp) => {
   else return "방금 전";
 };
 
+const nav = document.querySelector("#nav-0");
+let link = document.location.href;
+if (link === "http://127.0.0.1:8000/") nav.style.color = "#ff7e36";
+
 const renderData = (data) => {
   const wrap = document.querySelector(".wrap");
   data = data.sort((a, b) => b.insertAt - a.insertAt);
