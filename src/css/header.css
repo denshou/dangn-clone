@@ -3,7 +3,7 @@ header {
   justify-content: center;
   margin-bottom: 15px;
   position: fixed;
-  width: 100%;
+  width: 100vw;
   height: 60px;
   background-color: white;
 }
