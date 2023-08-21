@@ -2,9 +2,16 @@
   display: flex;
   justify-content: center;
 } */
+
+container {
+  display: flex;
+  justify-content: center;
+}
+
 .input-form {
   width: 355px;
   height: 355px;
+  padding-top: 100px;
 }
 .upload-btn {
   width: 50px;
@@ -19,9 +26,11 @@
 }
 
 .input-form input[type="file"] {
-  position: absolute;
-  width: 0;
-  height: 0;
+  /* position: absolute; */
+  /* width: 0;
+  height: 0; */
+  width: 355px;
+  height: 25px;
   padding: 0;
   overflow: hidden;
   border: 0;

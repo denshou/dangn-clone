@@ -1,5 +1,19 @@
 <script>
+  import { onMount } from "svelte";
   import Nav from "../components/Nav.svelte";
+  import { getDatabase, ref, onValue } from "firebase/database";
+
+  $: items = []; // 반응형 변수
+
+  const db = getDatabase();
+  const itemsRef = ref(db, "items/");
+
+  onMount(() => { // 화면이 렌더링 될 때마다 onValue 호출
+    onValue(itemsRef, (snapshot) => {
+      const data = snapshot.val();
+      items = Object.values(data);
+    });
+  });
 </script>
 
 <Nav location="home" />
@@ -86,15 +100,26 @@
     <div class="hot-title">중고거래 인기매물</div>
 
     <div class="wrap">
+      {#each items as item}
+        <div class="item-info">
+          <div class="item-info-img">
+            <img src="assets/cat.png" alt="" />
+          </div>
+          <div class="item-info-title">{item.title}</div>
+          <div class="item-info-price">{item.price}</div>
+          <div class="item-info-place">{item.place}</div>
+          <div class="item-info-like">관심 11 - 채팅 47</div>
+        </div>
+      {/each}
       <!-- <div class="item-info">
-            <div class="item-info-img">
-              <img src="assets/cat.png" alt="" />
-            </div>
-            <div class="item-info-title">제습기</div>
-            <div class="item-info-price">10,000원</div>
-            <div class="item-info-place">서울 서초구 반포1동</div>
-            <div class="item-info-like">관심 11 - 채팅 47</div>
-          </div> -->
+        <div class="item-info-img">
+          <img src="assets/cat.png" alt="" />
+        </div>
+        <div class="item-info-title">제습기</div>
+        <div class="item-info-price">10,000원</div>
+        <div class="item-info-place">서울 서초구 반포1동</div>
+        <div class="item-info-like">관심 11 - 채팅 47</div>
+      </div> -->
     </div>
 
     <a

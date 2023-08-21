@@ -2,6 +2,7 @@
   import Index from "./pages/Index.svelte";
   import NeighborShop from "./pages/NeighborShop.svelte";
   import Router from "svelte-spa-router";
+  import Write from "./pages/Write.svelte";
   import "./css/reset.css";
   import "./css/header.css";
   import "./css/style.css";
@@ -12,6 +13,7 @@
   const routes = {
     "/": Index,
     "/neighborshop": NeighborShop,
+    "/write": Write,
   };
 </script>
 

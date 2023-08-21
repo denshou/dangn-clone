@@ -25,7 +25,7 @@
 
   <input type="text" placeholder="물품이나 동네를 검색해보세요" class="input" />
   <a class="chat" href="chat.html">채팅하기</a>
-  <a class="chat" href="write.html">글쓰기</a>
+  <a class="chat" href="#/write">글쓰기</a>
   <a class="chat" href="signup.html">회원가입</a>
   <a class="chat" href="login.html">로그인</a>
 </header>
