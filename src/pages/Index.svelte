@@ -8,12 +8,27 @@
   const db = getDatabase();
   const itemsRef = ref(db, "items/");
 
-  onMount(() => { // 화면이 렌더링 될 때마다 onValue 호출
+  onMount(() => {
+    // 화면이 렌더링 될 때마다 onValue 호출
     onValue(itemsRef, (snapshot) => {
       const data = snapshot.val();
-      items = Object.values(data);
+      items = Object.values(data).reverse();
     });
   });
+
+  const calcTime = (timestamp) => {
+    //한국시간 기준 UTC+9
+    const curTime = new Date().getTime() - 9 * 60 * 60 * 1000;
+    const time = new Date(curTime - timestamp);
+    const hour = time.getHours();
+    const min = time.getMinutes();
+    const sec = time.getSeconds();
+
+    if (hour > 0) return `${hour}시간 전`;
+    else if (min > 0) return `${min}분 전`;
+    else if (sec > 0) return `${sec}초 전`;
+    else return "방금 전";
+  };
 </script>
 
 <Nav location="home" />
@@ -103,11 +118,13 @@
       {#each items as item}
         <div class="item-info">
           <div class="item-info-img">
-            <img src="assets/cat.png" alt="" />
+            <img src={item.imgUrl} alt="" />
           </div>
           <div class="item-info-title">{item.title}</div>
           <div class="item-info-price">{item.price}</div>
-          <div class="item-info-place">{item.place}</div>
+          <div class="item-info-place">
+            {item.place} · {calcTime(item.insertAt)}
+          </div>
           <div class="item-info-like">관심 11 - 채팅 47</div>
         </div>
       {/each}

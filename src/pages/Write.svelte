@@ -1,22 +1,61 @@
 <script>
   import Nav from "../components/Nav.svelte";
   import { getDatabase, ref, push } from "firebase/database";
+  import {
+    getStorage,
+    ref as refImage,
+    uploadBytes,
+    getDownloadURL,
+  } from "firebase/storage";
 
   let title;
   let price;
   let description;
   let place;
+  let files;
 
-  function writeItemData(evnet) {
+  const storage = getStorage();
+
+  const uploadFile = async () => {
+    const file = files[0];
+    const name = file.name;
+    const imgRef = refImage(storage, name);
+    await uploadBytes(imgRef, file);
+    const url = await getDownloadURL(imgRef);
+    return url;
+  };
+
+  function writeItemData(imgUrl) {
     const db = getDatabase();
     push(ref(db, "items/"), {
       title,
       price,
       description,
       place,
+      insertAt: new Date().getTime(),
+      imgUrl,
     });
     window.location.hash = "/";
   }
+
+  const handleSubmit = async () => {
+    const url = await uploadFile();
+    writeItemData(url);
+  };
+
+  const calcTime = (timestamp) => {
+  //한국시간 기준 UTC+9
+  const curTime = new Date().getTime() - 9 * 60 * 60 * 1000;
+  const time = new Date(curTime - timestamp);
+  const hour = time.getHours();
+  const min = time.getMinutes();
+  const sec = time.getSeconds();
+
+  if (hour > 0) return `${hour}시간 전`;
+  else if (min > 0) return `${min}분 전`;
+  else if (sec > 0) return `${sec}초 전`;
+  else return "방금 전";
+};
 </script>
 
 <Nav location="write" />
@@ -24,16 +63,16 @@
   <form
     class="input-form"
     id="input-form"
-    on:submit|preventDefault={writeItemData}
+    on:submit|preventDefault={handleSubmit}
   >
-    <!-- <label for="image"> -->
+    <label for="image">
       <!-- <img src="assets/camera.svg" alt="" class="img-upload" /> -->
-    <!-- </label> -->
+    </label>
     <!-- <input type="file" onchange="readURL(this);" id="image" name="image" />
     <span class="preview-img">
       <img id="preview" onclick="popImage(this.src)" class="preview-img" />
     </span> -->
-    <!-- <input type="file" id="image" name="image" /> -->
+    <input type="file" id="image" name="image" bind:files />
 
     <hr />
     <div>
